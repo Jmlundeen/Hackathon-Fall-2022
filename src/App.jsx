@@ -5,7 +5,7 @@ import CurrentTempOutput from './CurrentTempOutput';
 import { Space } from '@mantine/core';
 function App() {
 	const [showDisplay, setShowDisplay] = useState(false);
-	const [targetTemp, setTargetTemp] = useState(0);
+	const [targetTemp, setTargetTemp] = useState(30);
 	const [hotOrCold, setHotOrCold] = useState(false);
 	const [CorF, setCorF] = useState(false);
 
@@ -34,8 +34,7 @@ function App() {
 		var newUrl = `http://localhost:5000/setAlarm/${targetTemp}/${
 			hotOrCold ? 1 : 0
 		}`;
-		fetch(newUrl, requestOptions)
-			.then((data) => console.log(data));
+		fetch(newUrl, requestOptions).then((data) => console.log(data));
 		console.log(num);
 		console.log(boolean);
 	};

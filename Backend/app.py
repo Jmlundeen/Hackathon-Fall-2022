@@ -17,7 +17,7 @@ CORS(app)
 # # configure the serial connections (the parameters differs on the device you are connecting to)
 ser = serial.Serial()
 ser.baudrate = 9600
-ser.port = '/dev/tty.usbserial-0001'
+ser.port = 'COM8'
 ser.open()
 
 # -*- coding: utf-8 -*-
@@ -47,27 +47,37 @@ def setAlarm(threshold,naturalIncrease):
 @app.route("/getInfo")
 def getThreshold():
     global tempHistory, eta, currentTemperature, alarmActivated, heatThreshold, previousTemp
-    output = ser.readline().decode("utf-8").strip().split(",")
-    currentTemperature = float(output[0])
-    if abs(currentTemperature - previousTemp) < 10:
-        tempHistory.append({'temp': currentTemperature, 'name': output[1]})
-        currentTemperature = previousTemp
-    if(len(tempHistory) > 5):
-        if(len(tempHistory) > 180):
-            tempHistory = tempHistory[1:]
-        eta = secleft(tempHistory, heatThreshold, len(tempHistory))
-    alarmActivated = False
-    if naturalTempIncrease == True:
-        alarmActivated = currentTemperature > heatThreshold 
-    else:
-        alarmActivated = currentTemperature < heatThreshold
-    result = {
-        "currentTemperature": currentTemperature,
-        "targetTemperature": heatThreshold,
-        "tempHistory": tempHistory,
-        "alarmActivated": alarmActivated,
-        "eta": eta
-    }
-    previousTemp = float(output[0])
-    return result
+    try:
+        output = ser.readline().decode("utf-8").strip().split(",")
+        currentTemperature = float(output[0])
+        if abs(currentTemperature - previousTemp) < 10:
+            tempHistory.append({'temp': currentTemperature, 'name': output[1]})
+            currentTemperature = previousTemp
+        if(len(tempHistory) > 5):
+            if(len(tempHistory) > 20):
+                tempHistory = tempHistory[1:]
+            eta = secleft(tempHistory, heatThreshold, len(tempHistory))
+        alarmActivated = False
+        if naturalTempIncrease == True:
+            alarmActivated = currentTemperature > heatThreshold 
+        else:
+            alarmActivated = currentTemperature < heatThreshold
+        result = {
+            "currentTemperature": currentTemperature,
+            "targetTemperature": heatThreshold,
+            "tempHistory": tempHistory,
+            "alarmActivated": alarmActivated,
+            "eta": eta
+        }
+        previousTemp = float(output[0])
+        return result
+    except:
+        result = {
+            "currentTemperature": 20,
+            "targetTemperature": 20,
+            "tempHistory": [],
+            "alarmActivated": 0,
+            "eta": 0
+        }
+        return result
 app.run(debug=True)
