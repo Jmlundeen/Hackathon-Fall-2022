@@ -11,31 +11,31 @@ function App() {
 
 	const handleTargetTemp = (num) => {
 		setTargetTemp(num);
-		// const requestOptions = {
-		// 	method: 'POST',
-		// 	headers: { 'Content-Type': 'application/json' },
-		// 	body: JSON.stringify({ title: 'React POST Request Example' }),
-		// };
-		// var newUrl = `http://localhost:5000/setAlarm/${num}/${
-		// 	hotOrCold ? 1 : 0
-		// }`;
-		// fetch(newUrl, requestOptions)
-		// 	.then((data) => console.log(data));
-		console.log(num);
-	};
-
-	const handleHotCold = (boolean) => {
-		setHotOrCold(boolean);
 		const requestOptions = {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ title: 'React POST Request Example' }),
 		};
-		var newUrl = `http://localhost:5000/setAlarm/${targetTemp}/${
+		var newUrl = `http://localhost:5000/setAlarm/${num}/${
 			hotOrCold ? 1 : 0
 		}`;
-		fetch(newUrl, requestOptions).then((data) => console.log(data));
+		fetch(newUrl, requestOptions)
+			.then((data) => console.log(data));
 		console.log(num);
+	};
+
+	const handleHotCold = (boolean) => {
+		// setHotOrCold(boolean);
+		// const requestOptions = {
+		// 	method: 'POST',
+		// 	headers: { 'Content-Type': 'application/json' },
+		// 	body: JSON.stringify({ title: 'React POST Request Example' }),
+		// };
+		// var newUrl = `http://localhost:5000/setAlarm/${targetTemp}/${
+		// 	hotOrCold ? 1 : 0
+		// }`;
+		// fetch(newUrl, requestOptions).then((data) => console.log(data));
+		// console.log(num);
 		console.log(boolean);
 	};
 

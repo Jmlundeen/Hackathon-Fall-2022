@@ -13,20 +13,19 @@ class CurrentTempOutput extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			targetTemp: props.target,
+			targetTemp: 0,
 			currentTemp: 0,
 			eta: 0,
 		};
 	}
 
 	componentDidMount() {
-		this.timer = setInterval(() => this.getItems(), 2500);
+		this.timer = setInterval(() => this.getItems(), 1100);
 	}
 	componentWillUnmount() {
 		this.timer = null; // here...
 	}
 	getItems() {
-		let count = this.state.count;
 		try {
 			fetch('http://localhost:5000/getInfo')
 				.then((result) => result.json())
@@ -110,7 +109,7 @@ class CurrentTempOutput extends Component {
 					})}
 				>
 					ETA Before Reaching Temp:{' '}
-					{this.state.eta > 10 ? this.state.eta : '<10 seconds'}
+					{this.state.eta > 10 ? this.state.eta.toFixed(0) : '<10 seconds'}
 				</Box>
 				<Space h="md" />
 				<LineChart
