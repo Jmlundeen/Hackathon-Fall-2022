@@ -1,18 +1,19 @@
 from flask import Flask
-import serial
+from flask_cors import CORS  # This is the magic
+# import serial
 
 app = Flask(__name__)
-
-#COM3
+CORS(app)
+# #COM3
 heatThreshold = 0
 naturalTempIncrease = False
 currentTemperature = 0
 
-# configure the serial connections (the parameters differs on the device you are connecting to)
-ser = serial.Serial()
-ser.baudrate = 9600
-ser.port = 'COM3'
-ser.open()
+# # configure the serial connections (the parameters differs on the device you are connecting to)
+# ser = serial.Serial()
+# ser.baudrate = 9600
+# ser.port = 'COM3'
+# ser.open()
 
 
 @app.route("/setAlarm/<int:threshold>/<int:naturalIncrease>")
@@ -23,8 +24,8 @@ def setAlarm(threshold, naturalIncrease):
 
 @app.route("/getInfo")
 def getThreshold():
-    output = ser.readline()
-    print(output)
+    # output = ser.readline()
+    # print(output)
     alarmActivated = False
     if naturalTempIncrease == True:
         alarmActivated = currentTemperature > heatThreshold 
