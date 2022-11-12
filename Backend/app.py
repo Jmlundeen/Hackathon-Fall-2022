@@ -7,7 +7,7 @@ CORS(app)
 # #COM3
 heatThreshold = 0
 naturalTempIncrease = False
-currentTemperature = 0
+currentTemperature = 8
 
 # # configure the serial connections (the parameters differs on the device you are connecting to)
 # ser = serial.Serial()
