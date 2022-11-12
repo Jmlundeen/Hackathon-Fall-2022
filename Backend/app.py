@@ -16,9 +16,9 @@ CORS(app)
 
 # # configure the serial connections (the parameters differs on the device you are connecting to)
 ser = serial.Serial()
-ser.baudrate = 9600
+ser.baudrate = 115200
 # ser.port = 'COM8'
-ser.port = '/dev/tty.usbserial-0001'
+ser.port = 'COM8'
 
 ser.open()
 
@@ -48,14 +48,16 @@ def setAlarm(threshold,naturalIncrease):
 
 @app.route("/getInfo")
 def getThreshold():
+    ser.flush()
     global tempHistory, eta, currentTemperature, alarmActivated, heatThreshold, previousTemp
     # try:
     output = ser.readline().decode("utf-8").strip().split(",")
+    # print(ser.readlines())
     currentTemperature = float(output[0])
     if abs(currentTemperature - previousTemp) < 10:
         tempHistory.append({'temp': currentTemperature, 'name': output[1]})
     if(len(tempHistory) > 5):
-        if(len(tempHistory) > 15):
+        if(len(tempHistory) > 120):
             tempHistory = tempHistory[1:]
         eta = secleft(tempHistory, heatThreshold, len(tempHistory))
     alarmActivated = False

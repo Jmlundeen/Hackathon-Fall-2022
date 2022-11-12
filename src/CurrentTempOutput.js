@@ -1,4 +1,5 @@
-import { Box, Space } from '@mantine/core';
+import { Box, Modal, Space, Alert } from '@mantine/core';
+import { IconAlertCircle } from '@tabler/icons';
 import React, { Component } from 'react';
 import {
 	LineChart,
@@ -13,14 +14,16 @@ class CurrentTempOutput extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			targetTemp: 0,
+			targetTemp: props.target,
 			currentTemp: 0,
 			eta: 0,
+			alarm: false,
+			fetch: false,
 		};
 	}
 
 	componentDidMount() {
-		this.timer = setInterval(() => this.getItems(), 1100);
+		this.timer = setInterval(() => this.getItems(), 1500);
 	}
 	componentWillUnmount() {
 		this.timer = null; // here...
@@ -32,7 +35,8 @@ class CurrentTempOutput extends Component {
 				.then((result) =>
 					this.setState({
 						currentTemp: result['currentTemperature'],
-						targetTemp: result['targetTemperature'],
+						// targetTemp: result['targetTemperature'],
+						alarm: result['alarmActivated'],
 						eta: result['eta'],
 						data: result['tempHistory'],
 					})
@@ -45,6 +49,19 @@ class CurrentTempOutput extends Component {
 	render() {
 		return (
 			<>
+				<Modal
+					opened={this.state.alarm}
+					onClose={() => this.setState({ alarm: !this.state.alarm })}
+				>
+					<Alert
+						icon={<IconAlertCircle size={16} />}
+						title="Bummer!"
+						color="red"
+					>
+						Something terrible happened! You made a mistake and there is no
+						going back, your data was lost forever!
+					</Alert>
+				</Modal>
 				<Box
 					sx={(theme) => ({
 						backgroundColor:
@@ -109,7 +126,8 @@ class CurrentTempOutput extends Component {
 					})}
 				>
 					ETA Before Reaching Temp:{' '}
-					{this.state.eta > 10 ? this.state.eta.toFixed(0) : '<10 seconds'}
+					{/* {this.state.eta > 10 ? this.state.eta.toFixed(0) : '<10 seconds'} */}
+					{this.state.eta.toFixed(0)}
 				</Box>
 				<Space h="md" />
 				<LineChart
