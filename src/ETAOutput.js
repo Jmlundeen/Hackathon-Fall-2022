@@ -2,11 +2,11 @@ import { Box} from '@mantine/core';
 import { IconAlertCircle } from '@tabler/icons';
 import React, {Component} from 'react'
 
-class TempOutput extends Component {
+class ETAOutput extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentTemp: 0
+            eta: 0
         };
     }
 
@@ -20,7 +20,7 @@ class TempOutput extends Component {
         let count = this.state.count
         fetch('http://localhost:5000/getInfo')
             .then(result => result.json())
-            .then(result => this.setState({ currentTemp: result['currentTemperature']}));
+            .then(result => this.setState({ eta: result['eta']}));
     }
     
  render() {
@@ -39,11 +39,11 @@ class TempOutput extends Component {
         },
       })}
     >
-      Current Temperature: {this.state.currentTemp}
+      ETA Before Reaching Temp: {this.state.eta}
     </Box>
    );
  }
 }
 
    
-export default TempOutput
+export default ETAOutput
