@@ -40,6 +40,14 @@ function App() {
 	let button;
 	if (showDisplay) {
 		// currDisplay = <TempOutput target={targetTemp} />;
+		currDisplay = (
+			<div>
+				<CurrentTempOutput target={targetTemp} />
+				<Space h="md" />
+				<ETAOutput />
+			</div>
+		);
+
 		button = (
 			<button onClick={() => setShowDisplay(false)}>change display</button>
 		);
@@ -61,9 +69,6 @@ function App() {
 				<div className="App">
 					{currDisplay}
 					{button}
-					<CurrentTempOutput />
-					<Space h="md" />
-					<ETAOutput />
 				</div>
 			</header>
 		</>
