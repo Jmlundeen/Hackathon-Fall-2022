@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import './CurrentTempOutput.css';
 import { Autocomplete, Box, Space } from '@mantine/core';
+=======
+import { Box, Modal, Space, Alert } from '@mantine/core';
+import { IconAlertCircle } from '@tabler/icons';
+>>>>>>> 84ded9d5c3638c9772073774ff6613a789de48a8
 import React, { Component } from 'react';
 import {
 	LineChart,
@@ -17,24 +22,26 @@ class CurrentTempOutput extends Component {
 			targetTemp: props.target,
 			currentTemp: 0,
 			eta: 0,
+			alarm: false,
+			CorF: props.CorF,
 		};
 	}
 
 	componentDidMount() {
-		this.timer = setInterval(() => this.getItems(), 2500);
+		this.timer = setInterval(() => this.getItems(), 1500);
 	}
 	componentWillUnmount() {
 		this.timer = null; // here...
 	}
 	getItems() {
-		let count = this.state.count;
 		try {
 			fetch('http://localhost:5000/getInfo')
 				.then((result) => result.json())
 				.then((result) =>
 					this.setState({
 						currentTemp: result['currentTemperature'],
-						targetTemp: result['targetTemperature'],
+						// targetTemp: result['targetTemperature'],
+						alarm: result['alarmActivated'],
 						eta: result['eta'],
 						data: result['tempHistory'],
 					})
@@ -47,6 +54,19 @@ class CurrentTempOutput extends Component {
 	render() {
 		return (
 			<>
+				<Modal
+					opened={this.state.alarm}
+					onClose={() => this.setState({ alarm: !this.state.alarm })}
+				>
+					<Alert
+						icon={<IconAlertCircle size={16} />}
+						title="Bummer!"
+						color="red"
+					>
+						Something terrible happened! You made a mistake and there is no
+						going back, your data was lost forever!
+					</Alert>
+				</Modal>
 				<Box
 					sx={(theme) => ({
 						backgroundColor:
@@ -66,7 +86,10 @@ class CurrentTempOutput extends Component {
 						},
 					})}
 				>
-					Current Temperature: {this.state.currentTemp}
+					Current Temperature:{' '}
+					{this.state.CorF
+						? `${(this.state.currentTemp * (9 / 5) + 32).toFixed(2)} °F`
+						: `${this.state.currentTemp} °C`}
 				</Box>
 				<Space h="md" />
 				<Box
@@ -88,7 +111,10 @@ class CurrentTempOutput extends Component {
 						},
 					})}
 				>
-					Target Temperature: {this.state.targetTemp}
+					Target Temperature:{' '}
+					{this.state.CorF
+						? `${(this.state.targetTemp * (9 / 5) + 32).toFixed(2)} °F`
+						: `${this.state.targetTemp} °C`}
 				</Box>
 				<Space h="md" />
 				<Box
@@ -110,8 +136,9 @@ class CurrentTempOutput extends Component {
 						},
 					})}
 				>
-					ETA Before Reaching Temp:{' '}
-					{this.state.eta > 10 ? this.state.eta : '<10 seconds'}
+					ETA Before Reaching Temp:{'  '}
+					{/* {this.state.eta > 10 ? this.state.eta.toFixed(0) : '<10 seconds'} */}
+					{`${this.state.eta.toFixed(0)} seconds`}
 				</Box>
 				<Space h="md" />
 				<div id = "graph"
