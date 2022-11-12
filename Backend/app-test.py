@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from flask_cors import CORS  # This is the magic
 import serial
 from scipy import stats
@@ -13,6 +13,7 @@ x = []
 y = []
 slope = 0
 intercept = 0
+output = [0,0]
 
 app = Flask(__name__)
 
@@ -34,9 +35,13 @@ def secleft ():
     p = 0
     std_err =0 
     global slope, intercept, heatThreshold,x,y
-    print("x " )
     slope, intercept, r, p, std_err = stats.linregress(x, y)
-    return slope*heatThreshold+intercept
+    print(slope)
+    print(intercept)
+    print(heatThreshold)
+    intercept
+
+    return (((heatThreshold-intercept)/slope))
 
 @app.route("/setAlarm/<threshold>/<naturalIncrease>",methods=['POST'])
 def setAlarm(threshold,naturalIncrease):
@@ -45,12 +50,17 @@ def setAlarm(threshold,naturalIncrease):
     naturalTempIncrease = naturalIncrease == 0 if False else True
     return "Successfully set up alarm!"
 
+@app.route("/", methods=['POST'])
+def setOutput():
+    global output
+    output = (request.data).decode("utf-8").strip().split(",")
+
 @app.route("/getInfo")
 def getThreshold():
     ser.flush()
-    global tempHistory, eta, currentTemperature, alarmActivated, heatThreshold, previousTemp,x,y
+    global tempHistory, eta, currentTemperature, alarmActivated, heatThreshold, previousTemp,x,y, output
     # try:
-    output = ser.readline().decode("utf-8").strip().split(",")
+    # output = ser.readline().decode("utf-8").strip().split(",")
     # print(ser.readlines())
     currentTemperature = float(output[0])
     if abs(currentTemperature - previousTemp) < 10:
@@ -88,4 +98,4 @@ def getThreshold():
     #         "eta": 999
     #     }
     #     return result
-app.run(debug=True)
+app.run(host='0.0.0.0',debug=True)
