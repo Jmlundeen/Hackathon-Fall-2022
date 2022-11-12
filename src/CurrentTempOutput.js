@@ -1,10 +1,6 @@
-<<<<<<< HEAD
 import './CurrentTempOutput.css';
-import { Autocomplete, Box, Space } from '@mantine/core';
-=======
 import { Box, Modal, Space, Alert } from '@mantine/core';
 import { IconAlertCircle } from '@tabler/icons';
->>>>>>> 84ded9d5c3638c9772073774ff6613a789de48a8
 import React, { Component } from 'react';
 import {
 	LineChart,
@@ -23,29 +19,37 @@ class CurrentTempOutput extends Component {
 			currentTemp: 0,
 			eta: 0,
 			alarm: false,
-			CorF: props.CorF,
+			cOrF: props.CorF,
+			hotOrCold: props.hotOrCold,
 		};
 	}
 
 	componentDidMount() {
+		// refresh interval for retrieving from esp32
 		this.timer = setInterval(() => this.getItems(), 1500);
 	}
 	componentWillUnmount() {
 		this.timer = null; // here...
 	}
 	getItems() {
+		// try to fetch temperature from esp32
 		try {
 			fetch('http://localhost:5000/getInfo')
 				.then((result) => result.json())
-				.then((result) =>
+				.then((result) => {
+					let fResult = result['currentTemperature'];
+					if (this.state.cOrF) {
+						fResult = fResult * (9 / 5) + 32;
+					}
 					this.setState({
 						currentTemp: result['currentTemperature'],
-						// targetTemp: result['targetTemperature'],
-						alarm: result['alarmActivated'],
+						alarm: this.state.hotOrCold
+							? result['currentTemperature'] <= this.state.targetTemp
+							: fResult >= this.state.targetTemp,
 						eta: result['eta'],
 						data: result['tempHistory'],
-					})
-				);
+					});
+				});
 		} catch (error) {
 			console.log(error);
 		}
@@ -54,17 +58,13 @@ class CurrentTempOutput extends Component {
 	render() {
 		return (
 			<>
+				{/* Modal popup for notification that target temperature was reached */}
 				<Modal
 					opened={this.state.alarm}
 					onClose={() => this.setState({ alarm: !this.state.alarm })}
 				>
-					<Alert
-						icon={<IconAlertCircle size={16} />}
-						title="Bummer!"
-						color="red"
-					>
-						Something terrible happened! You made a mistake and there is no
-						going back, your data was lost forever!
+					<Alert icon={<IconAlertCircle size={16} />} color="green">
+						Reached Target Temperature
 					</Alert>
 				</Modal>
 				<Box
@@ -87,7 +87,7 @@ class CurrentTempOutput extends Component {
 					})}
 				>
 					Current Temperature:{' '}
-					{this.state.CorF
+					{this.state.cOrF
 						? `${(this.state.currentTemp * (9 / 5) + 32).toFixed(2)} °F`
 						: `${this.state.currentTemp} °C`}
 				</Box>
@@ -112,8 +112,8 @@ class CurrentTempOutput extends Component {
 					})}
 				>
 					Target Temperature:{' '}
-					{this.state.CorF
-						? `${(this.state.targetTemp * (9 / 5) + 32).toFixed(2)} °F`
+					{this.state.cOrF
+						? `${this.state.targetTemp} °F`
 						: `${this.state.targetTemp} °C`}
 				</Box>
 				<Space h="md" />
@@ -137,41 +137,43 @@ class CurrentTempOutput extends Component {
 					})}
 				>
 					ETA Before Reaching Temp:{'  '}
-					{/* {this.state.eta > 10 ? this.state.eta.toFixed(0) : '<10 seconds'} */}
-					{`${this.state.eta.toFixed(0)} seconds`}
+					{`${this.state.eta.toFixed(0)} minutes`}
 				</Box>
 				<Space h="md" />
-				<div id = "graph"
-					margin= {{
-						top: 5,
-						right:0,
-						left: 20,
-						bottom: 5,
-					}}
-				>
-				<LineChart
-					width={500}
-					height={300}
-					data={this.state.data}
+				<div
+					id="graph"
 					margin={{
 						top: 5,
-						right: 20,
+						right: 0,
 						left: 20,
 						bottom: 5,
 					}}
 				>
-					<CartesianGrid strokeDasharray="3 3" />
-					<XAxis dataKey="name" />
-					<YAxis domain={[10, 50]} />
-					<Tooltip />
-					<Legend />
-					<Line
-						type="monotone"
-						dataKey="temp"
-						stroke="#8884d8"
-						activeDot={{ r: 8 }}
-					/>
-				</LineChart></div>
+					{/* Live data chart of temp vs time */}
+					<LineChart
+						width={500}
+						height={300}
+						data={this.state.data}
+						margin={{
+							top: 5,
+							right: 20,
+							left: 20,
+							bottom: 5,
+						}}
+					>
+						<CartesianGrid strokeDasharray="3 3" />
+						<XAxis dataKey="name" />
+						<YAxis domain={[10, 50]} />
+						<Tooltip />
+						<Legend />
+						<Line
+							type="monotone"
+							dataKey="temp"
+							stroke="#8884d8"
+							activeDot={{ r: 8 }}
+						/>
+					</LineChart>
+				</div>
 			</>
 		);
 	}

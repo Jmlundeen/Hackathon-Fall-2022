@@ -49,9 +49,7 @@ def setAlarm(threshold,naturalIncrease):
 def getThreshold():
     ser.flush()
     global tempHistory, eta, currentTemperature, alarmActivated, heatThreshold, previousTemp,x,y
-    # try:
     output = ser.readline().decode("utf-8").strip().split(",")
-    # print(ser.readlines())
     currentTemperature = float(output[0])
     if abs(currentTemperature - previousTemp) < 10:
         tempHistory.append({'temp': currentTemperature, 'name': output[1]})
@@ -79,13 +77,4 @@ def getThreshold():
     print({'temp': currentTemperature, 'name': output[1]})
     previousTemp = currentTemperature
     return result
-    # except:
-    #     result = {
-    #         "currentTemperature": 999,
-    #         "targetTemperature": 999,
-    #         "tempHistory": [],
-    #         "alarmActivated": 999,
-    #         "eta": 999
-    #     }
-    #     return result
 app.run(debug=True)

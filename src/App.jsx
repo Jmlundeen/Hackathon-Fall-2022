@@ -11,40 +11,19 @@ function App() {
 
 	const handleTargetTemp = (num) => {
 		setTargetTemp(num);
-		const requestOptions = {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ title: 'React POST Request Example' }),
-		};
-		var newUrl = `http://localhost:5000/setAlarm/${num}/${hotOrCold ? 1 : 0}`;
-		fetch(newUrl, requestOptions).then((data) => console.log(data));
-		console.log(num);
 	};
 
 	const handleHotCold = (boolean) => {
-		// setHotOrCold(boolean);
-		// const requestOptions = {
-		// 	method: 'POST',
-		// 	headers: { 'Content-Type': 'application/json' },
-		// 	body: JSON.stringify({ title: 'React POST Request Example' }),
-		// };
-		// var newUrl = `http://localhost:5000/setAlarm/${targetTemp}/${
-		// 	hotOrCold ? 1 : 0
-		// }`;
-		// fetch(newUrl, requestOptions).then((data) => console.log(data));
-		// console.log(num);
-		console.log(boolean);
+		setHotOrCold(boolean);
 	};
 
 	const handleCorF = (boolean) => {
 		setCorF(boolean);
-		console.log(boolean);
 	};
 
 	let currDisplay;
 	let button;
 	if (showDisplay) {
-		// currDisplay = <TempOutput target={targetTemp} />;
 		currDisplay = (
 			<div>
 				<CurrentTempOutput target={targetTemp} CorF={CorF} />
@@ -53,7 +32,13 @@ function App() {
 		);
 
 		button = (
-			<button onClick={() => setShowDisplay(false)}>Change display</button>
+			<button
+				onClick={() => {
+					setShowDisplay(false);
+				}}
+			>
+				Change display
+			</button>
 		);
 	} else {
 		currDisplay = (
@@ -67,7 +52,13 @@ function App() {
 			/>
 		);
 		button = (
-			<button onClick={() => setShowDisplay(true)}>Change display</button>
+			<button
+				onClick={() => {
+					setShowDisplay(true);
+				}}
+			>
+				Change display
+			</button>
 		);
 	}
 	return (
@@ -75,7 +66,7 @@ function App() {
 			<header className="">
 				<div className="App">
 					{currDisplay}
-					
+
 					{button}
 				</div>
 			</header>
