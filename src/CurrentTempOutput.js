@@ -1,7 +1,7 @@
 import { Box } from '@mantine/core';
 import React, { Component } from 'react';
 
-class TempOutput extends Component {
+class CurrentTempOutput extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -75,4 +75,4 @@ class TempOutput extends Component {
 	}
 }
 
-export default TempOutput;
+export default CurrentTempOutput;

@@ -1,8 +1,9 @@
 import './App.css';
 import TempInput from './Input';
 import { useState } from 'react';
-import TempOutput from './Output';
-
+import CurrentTempOutput from './CurrentTempOutput';
+import ETAOutput from './ETAOutput';
+import { Space } from '@mantine/core';
 function App() {
 	const [showDisplay, setShowDisplay] = useState(false);
 	const [targetTemp, setTargetTemp] = useState(0);
@@ -38,7 +39,7 @@ function App() {
 	let currDisplay;
 	let button;
 	if (showDisplay) {
-		currDisplay = <TempOutput target={targetTemp} />;
+		// currDisplay = <TempOutput target={targetTemp} />;
 		button = (
 			<button onClick={() => setShowDisplay(false)}>change display</button>
 		);
@@ -60,6 +61,9 @@ function App() {
 				<div className="App">
 					{currDisplay}
 					{button}
+					<CurrentTempOutput />
+					<Space h="md" />
+					<ETAOutput />
 				</div>
 			</header>
 		</>
