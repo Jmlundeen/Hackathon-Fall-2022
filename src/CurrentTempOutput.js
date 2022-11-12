@@ -1,5 +1,10 @@
+<<<<<<< HEAD
+import './CurrentTempOutput.css';
+import { Autocomplete, Box, Space } from '@mantine/core';
+=======
 import { Box, Modal, Space, Alert } from '@mantine/core';
 import { IconAlertCircle } from '@tabler/icons';
+>>>>>>> 84ded9d5c3638c9772073774ff6613a789de48a8
 import React, { Component } from 'react';
 import {
 	LineChart,
@@ -136,13 +141,21 @@ class CurrentTempOutput extends Component {
 					{`${this.state.eta.toFixed(0)} seconds`}
 				</Box>
 				<Space h="md" />
+				<div id = "graph"
+					margin= {{
+						top: 5,
+						right:0,
+						left: 20,
+						bottom: 5,
+					}}
+				>
 				<LineChart
 					width={500}
 					height={300}
 					data={this.state.data}
 					margin={{
 						top: 5,
-						right: 30,
+						right: 20,
 						left: 20,
 						bottom: 5,
 					}}
@@ -158,7 +171,7 @@ class CurrentTempOutput extends Component {
 						stroke="#8884d8"
 						activeDot={{ r: 8 }}
 					/>
-				</LineChart>
+				</LineChart></div>
 			</>
 		);
 	}
