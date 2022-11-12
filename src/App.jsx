@@ -2,7 +2,6 @@ import './App.css';
 import TempInput from './Input';
 import { useState } from 'react';
 import CurrentTempOutput from './CurrentTempOutput';
-import ETAOutput from './ETAOutput';
 import { Space } from '@mantine/core';
 function App() {
 	const [showDisplay, setShowDisplay] = useState(false);
@@ -12,22 +11,32 @@ function App() {
 
 	const handleTargetTemp = (num) => {
 		setTargetTemp(num);
-		const requestOptions = {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ title: 'React POST Request Example' }),
-		};
-		newUrl = `http://localhost:5000/setAlarm/${targetTemp}/${
-			hotOrCold ? 1 : 0
-		}`;
-		fetch('http://localhost:5000/setAlarm', requestOptions)
-			.then((response) => response.json())
-			.then((data) => this.setState({ postId: data.id }));
+		// const requestOptions = {
+		// 	method: 'POST',
+		// 	headers: { 'Content-Type': 'application/json' },
+		// 	body: JSON.stringify({ title: 'React POST Request Example' }),
+		// };
+		// var newUrl = `http://localhost:5000/setAlarm/${num}/${
+		// 	hotOrCold ? 1 : 0
+		// }`;
+		// fetch(newUrl, requestOptions)
+		// 	.then((data) => console.log(data));
 		console.log(num);
 	};
 
 	const handleHotCold = (boolean) => {
 		setHotOrCold(boolean);
+		const requestOptions = {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ title: 'React POST Request Example' }),
+		};
+		var newUrl = `http://localhost:5000/setAlarm/${targetTemp}/${
+			hotOrCold ? 1 : 0
+		}`;
+		fetch(newUrl, requestOptions)
+			.then((data) => console.log(data));
+		console.log(num);
 		console.log(boolean);
 	};
 
@@ -44,12 +53,11 @@ function App() {
 			<div>
 				<CurrentTempOutput target={targetTemp} />
 				<Space h="md" />
-				<ETAOutput />
 			</div>
 		);
 
 		button = (
-			<button onClick={() => setShowDisplay(false)}>change display</button>
+			<button onClick={() => setShowDisplay(false)}>Change display</button>
 		);
 	} else {
 		currDisplay = (
@@ -63,7 +71,7 @@ function App() {
 			/>
 		);
 		button = (
-			<button onClick={() => setShowDisplay(true)}>change display</button>
+			<button onClick={() => setShowDisplay(true)}>Change display</button>
 		);
 	}
 	return (
