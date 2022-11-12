@@ -22,8 +22,8 @@ CORS(app)
 # # configure the serial connections (the parameters differs on the device you are connecting to)
 ser = serial.Serial()
 ser.baudrate = 115200
-# ser.port = 'COM8'
-ser.port = '/dev/tty.usbserial-0001'
+ser.port = 'COM8'
+# ser.port = '/dev/tty.usbserial-0001'
 
 ser.open()
 

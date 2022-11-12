@@ -18,7 +18,7 @@ class CurrentTempOutput extends Component {
 			currentTemp: 0,
 			eta: 0,
 			alarm: false,
-			fetch: false,
+			CorF: props.CorF,
 		};
 	}
 
@@ -81,7 +81,10 @@ class CurrentTempOutput extends Component {
 						},
 					})}
 				>
-					Current Temperature: {this.state.currentTemp}
+					Current Temperature:{' '}
+					{this.state.CorF
+						? `${(this.state.currentTemp * (9 / 5) + 32).toFixed(2)} °F`
+						: `${this.state.currentTemp} °C`}
 				</Box>
 				<Space h="md" />
 				<Box
@@ -103,7 +106,10 @@ class CurrentTempOutput extends Component {
 						},
 					})}
 				>
-					Target Temperature: {this.state.targetTemp}
+					Target Temperature:{' '}
+					{this.state.CorF
+						? `${(this.state.targetTemp * (9 / 5) + 32).toFixed(2)} °F`
+						: `${this.state.targetTemp} °C`}
 				</Box>
 				<Space h="md" />
 				<Box
@@ -125,9 +131,9 @@ class CurrentTempOutput extends Component {
 						},
 					})}
 				>
-					ETA Before Reaching Temp:{' '}
+					ETA Before Reaching Temp:{'  '}
 					{/* {this.state.eta > 10 ? this.state.eta.toFixed(0) : '<10 seconds'} */}
-					{this.state.eta.toFixed(0)}
+					{`${this.state.eta.toFixed(0)} seconds`}
 				</Box>
 				<Space h="md" />
 				<LineChart
