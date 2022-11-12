@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import './input.css';
+
 import {
 	Button,
 	createStyles,
@@ -41,13 +43,20 @@ export default function TempInput({
 	const { classes } = useStyles();
 	return (
 		<>
-			<div>
-				<TextInput
+			<div id = "all">
+				
+			<TextInput 
+					style={{
+						display: 'flex',
+        				alignItems: 'center',
+        				justifyContent: 'center',
+					}}
 					value={targetTemp}
-					label="Temperature"
+					size = "md"
+					label= "Temperature"
 					placeholder="30"
 					onChange={(event) => handleTargetTemp(event.currentTarget.value)}
-				/>
+				/> 
 				<SegmentedControl
 					title="Degree Format"
 					value={CorF}

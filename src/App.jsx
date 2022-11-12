@@ -78,6 +78,7 @@ function App() {
 			<header className="">
 				<div className="App">
 					{currDisplay}
+					
 					{button}
 				</div>
 			</header>

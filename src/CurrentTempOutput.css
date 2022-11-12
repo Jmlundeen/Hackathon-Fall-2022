@@ -1,0 +1,33 @@
+@media screen and (max-width: 2000px) {
+    #graph{
+        margin-left: 450px; 
+        margin-right: 0px; 
+        margin-top: 0px;
+        margin-bottom: 0px;
+        width: 50%;
+        padding: 10px;
+ }
+}
+@media screen and (max-width: 900px) {
+    #graph{
+        margin-left: 142px; 
+        margin-right: 0px; 
+        margin-top: 0px;
+        margin-bottom: 0px;
+        width: 50%;
+        padding: 10px;
+ }
+}
+ @media screen and (max-width: 600px) {
+    #graph{
+        margin-left: 142px; 
+        margin-right: 0px; 
+        margin-top: 0px;
+        margin-bottom: 0px;
+        width: 50%;
+        padding: 1px;
+}
+}
+#dataKey{
+    margin-left:115px;
+}

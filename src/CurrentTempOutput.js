@@ -1,4 +1,5 @@
-import { Box, Space } from '@mantine/core';
+import './CurrentTempOutput.css';
+import { Autocomplete, Box, Space } from '@mantine/core';
 import React, { Component } from 'react';
 import {
 	LineChart,
@@ -113,13 +114,21 @@ class CurrentTempOutput extends Component {
 					{this.state.eta > 10 ? this.state.eta : '<10 seconds'}
 				</Box>
 				<Space h="md" />
+				<div id = "graph"
+					margin= {{
+						top: 5,
+						right:0,
+						left: 20,
+						bottom: 5,
+					}}
+				>
 				<LineChart
 					width={500}
 					height={300}
 					data={this.state.data}
 					margin={{
 						top: 5,
-						right: 30,
+						right: 20,
 						left: 20,
 						bottom: 5,
 					}}
@@ -135,7 +144,7 @@ class CurrentTempOutput extends Component {
 						stroke="#8884d8"
 						activeDot={{ r: 8 }}
 					/>
-				</LineChart>
+				</LineChart></div>
 			</>
 		);
 	}
