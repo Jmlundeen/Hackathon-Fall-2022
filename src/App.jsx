@@ -57,6 +57,9 @@ function App() {
 				handleHotCold={handleHotCold}
 				handleTargetTemp={handleTargetTemp}
 				handleCorF={handleCorF}
+				targetTemp={targetTemp}
+				hotOrCold={hotOrCold}
+				CorF={CorF}
 			/>
 		);
 		button = (

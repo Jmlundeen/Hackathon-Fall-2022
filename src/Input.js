@@ -34,17 +34,23 @@ export default function TempInput({
 	handleTargetTemp,
 	handleHotCold,
 	handleCorF,
+	targetTemp,
+	hotOrCold,
+	CorF,
 }) {
 	const { classes } = useStyles();
 	return (
 		<>
 			<div>
 				<TextInput
+					value={targetTemp}
 					label="Temperature"
 					placeholder="30"
 					onChange={(event) => handleTargetTemp(event.currentTarget.value)}
 				/>
 				<SegmentedControl
+					title="Degree Format"
+					value={CorF}
 					onChange={(value) => handleCorF(value)}
 					radius="xl"
 					size="md"
@@ -60,6 +66,8 @@ export default function TempInput({
 			</div>
 			<div>
 				<SegmentedControl
+					title="Heating up or Cooling down?"
+					value={hotOrCold}
 					onChange={(value) => handleHotCold(value)}
 					radius="xl"
 					size="md"
